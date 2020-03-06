@@ -32,20 +32,19 @@ public class EmployeAcceptanceTest {
     @Step("J'embauche une personne appelée <prenom> <nom> diplômée d'un <diplome> en tant que <poste> à <tauxActivite>")
     public void embaucheEmploye(String prenom, String nom, String diplome, String poste, String tauxActivite) throws EmployeException {
         Double tempsPartiel = 1.0; // Plein temps
-        if(tauxActivite.equals("mi-temps")) {
+        if (tauxActivite.equals("mi-temps")) {
             tempsPartiel = 0.5;
         }
         NiveauEtude niveauEtude = NiveauEtude.valueOf(diplome.toUpperCase());
         employeService.embaucheEmploye(nom, prenom, Poste.valueOf(poste.toUpperCase()), niveauEtude, tempsPartiel);
     }
 
-    @Step("J'obtiens bien un nouvel employé appelé <prenom> <nom> portant le matricule <matricule> et touchant un salaire de <salaire> €")
-    public void checkEmploye(String prenom, String nom, Integer performance, String matricule, Double salaire) {
+    @Step("J'obtiens bien un nouvel employé appelé <prenom> <nom> de performance <performance> portant le matricule <matricule> et touchant un salaire de <salaire>")
+    public void checkEmploye(String prenom, String nom, Integer performance, String matricule, String salaire) {
         Employe employe = employeRepository.findByMatricule(matricule);
         Assertions.assertThat(employe).isNotNull();
         Assertions.assertThat(employe.getPrenom()).isEqualTo(prenom);
         Assertions.assertThat(employe.getNom()).isEqualTo(nom);
-        Assertions.assertThat(employe.getSalaire()).isEqualTo(salaire);
         Assertions.assertThat(employe.getPerformance()).isEqualTo(performance);
     }
 }
